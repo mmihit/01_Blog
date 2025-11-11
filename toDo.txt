@@ -1,0 +1,3 @@
+rivision:
+what is hibernate;
+what is bean;   
