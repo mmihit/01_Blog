@@ -1,17 +1,15 @@
-package _Blog.demo.models;
+package _Blog.demo.models.Entity;
 
 import java.time.LocalDateTime;
-
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "comments")
+@Table(name = "likes", uniqueConstraints = @UniqueConstraint(columnNames = { "user_id", "post_id" }))
 @Data
 @NoArgsConstructor
-public class Comment {
-
+public class Like {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -24,10 +22,6 @@ public class Comment {
     @JoinColumn(name = "post_id", nullable = false)
     private Post post;
 
-    @Column
-    private String content;
-
     @Column(name = "created_at")
     private LocalDateTime createdAt = LocalDateTime.now();
-
 }

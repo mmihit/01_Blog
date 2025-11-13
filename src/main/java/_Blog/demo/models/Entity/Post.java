@@ -1,4 +1,4 @@
-package _Blog.demo.models;
+package _Blog.demo.models.Entity;
 
 import java.time.LocalDateTime;
 import java.util.List;
