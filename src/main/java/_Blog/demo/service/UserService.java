@@ -28,7 +28,16 @@ public class UserService {
     }
 
     public void saveUser(UserDTO userDto) {
+        System.out.println("I'm Here Please,*******************");
         User user = User.toEntity(userDto);
+        
+        if (userRepo.existsByusername(userDto.getUsername())) {
+            throw new RuntimeException("this username already exists");
+        }
+        if (userRepo.existsByemail(userDto.getEmail())) {
+            throw new RuntimeException("this email already exists");
+        }
+        
         if (user != null) {
             userRepo.save(user);
         }
