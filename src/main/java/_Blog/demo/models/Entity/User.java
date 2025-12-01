@@ -9,8 +9,8 @@ import lombok.NoArgsConstructor;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-
-import _Blog.demo.models.DTO.UserDTO;
+import _Blog.demo.DTO.requests.SignUpRequest;
+import _Blog.demo.types.Role;
 
 @Entity
 @Table(name = "users")
@@ -33,12 +33,12 @@ public class User {
     @Column(nullable = false)
     private String password;
 
-    @Column(length = 20)
-    private String role;
+    @Enumerated(EnumType.STRING)
+    private Role role;
 
     private String avatar;
 
-    @Column(columnDefinition = "TEXT")
+    @Column(columnDefinition = "TEXT", length = 1500)
     private String bio;
 
     @Column(name = "is_banned")
@@ -85,12 +85,12 @@ public class User {
 
     @PrePersist
     protected void onCreate() {
-        this.role = "USER";
+        this.role = Role.USER;
         this.isBanned = false;
         this.createdAt = LocalDateTime.now();
     }
 
-    static public User toEntity(UserDTO userDto) {
+    static public User toEntity(SignUpRequest userDto) {
         return User.builder()
                 .username(userDto.getUsername())
                 .email(userDto.getEmail())

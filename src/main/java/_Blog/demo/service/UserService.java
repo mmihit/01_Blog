@@ -3,43 +3,45 @@ package _Blog.demo.service;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
-import _Blog.demo.models.DTO.UserDTO;
+import _Blog.demo.DTO.responses.UserDtoResponse;
+import _Blog.demo.jwt.UserPrincipal;
 import _Blog.demo.models.Entity.User;
 import _Blog.demo.repository.UserRepo;
 
 @Service
 public class UserService {
+
     @Autowired
     UserRepo userRepo;
+
+    public UserDtoResponse getMe() {
+        UserPrincipal userPrincipal = (UserPrincipal) SecurityContextHolder.getContext().getAuthentication()
+                .getPrincipal();
+        Long userId = userPrincipal.getId();
+        User user = getUserById(userId);
+        return UserDtoResponse.toDtoResponse(user);
+    }
 
     public User getUserByUsername(String username) {
         if (username != null && userRepo != null) {
             Optional<User> data = userRepo.findByusername(username);
-            if (data.isPresent()) {
-                return data.get();
-            }
-            return null;
-        } else {
-            System.err.println("user or serRepo equal null value");
-            return null;
+            return data.orElseThrow(
+                    () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "No user username found with " + username));
         }
+        System.err.println("user or userRepo equal null value");
+        throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "You should chose a username");
     }
 
-    public void saveUser(UserDTO userDto) {
-        System.out.println("I'm Here Please,*******************");
-        User user = User.toEntity(userDto);
-        
-        if (userRepo.existsByusername(userDto.getUsername())) {
-            throw new RuntimeException("this username already exists");
-        }
-        if (userRepo.existsByemail(userDto.getEmail())) {
-            throw new RuntimeException("this email already exists");
-        }
-        
-        if (user != null) {
-            userRepo.save(user);
-        }
+    public User getUserById(Long id) {
+        ResponseStatusException internalError = new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,
+                "Something wrong with, please try againe");
+        if (id != null && id != 0)
+            return userRepo.findById(id).orElseThrow(() -> internalError);
+        throw internalError;
     }
 }
