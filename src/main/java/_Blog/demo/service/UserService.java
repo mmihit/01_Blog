@@ -7,8 +7,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
-
-import _Blog.demo.DTO.responses.UserDtoResponse;
 import _Blog.demo.jwt.UserPrincipal;
 import _Blog.demo.models.Entity.User;
 import _Blog.demo.repository.UserRepo;
@@ -19,12 +17,18 @@ public class UserService {
     @Autowired
     UserRepo userRepo;
 
-    public UserDtoResponse getMe() {
-        UserPrincipal userPrincipal = (UserPrincipal) SecurityContextHolder.getContext().getAuthentication()
+    public Long getAuthenticatedUserId() {
+        Object principal = SecurityContextHolder.getContext().getAuthentication()
                 .getPrincipal();
+        if (!(principal instanceof UserPrincipal userPrincipal))
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Unauthorized");
         Long userId = userPrincipal.getId();
-        User user = getUserById(userId);
-        return UserDtoResponse.toDtoResponse(user);
+        return userId;
+    }
+
+    public User getMe() {
+        Long userId = getAuthenticatedUserId();
+        return getUserById(userId);
     }
 
     public User getUserByUsername(String username) {
@@ -43,5 +47,28 @@ public class UserService {
         if (id != null && id != 0)
             return userRepo.findById(id).orElseThrow(() -> internalError);
         throw internalError;
+    }
+
+    public boolean userExistsById(Long id) {
+        if (id != null && id > 0)
+            return userRepo.existsById(id);
+        return false;
+    }
+
+    public String getUsernameById(Long id) {
+        if (id != null && id > 0 && userExistsById(id)) {
+            return userRepo.findUsernameById(id).orElseThrow(
+                    () -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "There is no user with this Id"));
+        }
+        throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Id is invalid");
+    }
+
+    public Long getUserIdByUsername(String username) {
+        if (username != null && !username.isEmpty()) {
+            if (username.equals("me")) return getAuthenticatedUserId();
+            return userRepo.findByUsername(username).orElseThrow(
+                    () -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "There is no user with this username")).getId();
+        }
+        throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "The username is invalid");
     }
 }

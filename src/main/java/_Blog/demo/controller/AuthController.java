@@ -11,14 +11,11 @@ import _Blog.demo.DTO.requests.LoginRequest;
 import _Blog.demo.DTO.requests.SignUpRequest;
 import _Blog.demo.DTO.responses.JwtDtoResponse;
 import _Blog.demo.service.AuthenticationService;
-import _Blog.demo.service.UserService;
 import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/api/auth")
 public class AuthController {
-    @Autowired
-    private UserService userSrv;
 
     @Autowired
     private AuthenticationService authenticationService;

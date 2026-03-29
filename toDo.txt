@@ -1,3 +1,1 @@
-rivision:
-what is hibernate;
-what is bean;   
+should returning 404

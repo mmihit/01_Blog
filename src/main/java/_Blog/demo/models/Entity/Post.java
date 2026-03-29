@@ -3,17 +3,18 @@ package _Blog.demo.models.Entity;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import _Blog.demo.DTO.requests.PostRequest;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
 @Entity
-@Table(name = "posts", indexes = {
-        @Index(name = "idx_user_id", columnList = "user_id"),
-        @Index(name = "idx_created_at", columnList = "created_at")
-})
+@Table(name = "posts")
+@Builder
 @Data
 @NoArgsConstructor
+@AllArgsConstructor
 public class Post {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,18 +26,20 @@ public class Post {
     @Column(nullable = false)
     private String body;
 
-    @Column(name = "media_url")
-    private String mediaUrl;
-
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
+    @Builder.Default
     @Column
     private String status = "published";
 
+    @Builder.Default
     @Column(name = "created_at")
     private LocalDateTime createdAt = LocalDateTime.now();
+
+    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Media> Media;
 
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Comment> comments;
@@ -46,4 +49,12 @@ public class Post {
 
     @OneToMany(mappedBy = "reportingPost", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Report> reports;
+
+    public static Post toPostEntity(PostRequest postRequest, User user) {
+        return Post.builder()
+                .title(postRequest.getTitle())
+                .body(postRequest.getBody())
+                .user(user)
+                .build();
+    }
 }

@@ -8,8 +8,8 @@ import _Blog.demo.models.Entity.User;
 
 public interface UserRepo extends JpaRepository<User, Long> {
     public Optional<User> findByusername(String username);
-
     public boolean existsByusername(String username);
-
     public boolean existsByemail(String email);
+    public Optional<String> findUsernameById(Long id);
+    public Optional<User> findByUsername(String username);
 }
