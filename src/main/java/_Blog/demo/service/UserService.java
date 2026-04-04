@@ -44,8 +44,8 @@ public class UserService {
     public User getUserById(Long id) {
         ResponseStatusException internalError = new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,
                 "Something wrong with, please try againe");
-        if (id != null && id != 0)
-            return userRepo.findById(id).orElseThrow(() -> internalError);
+        if (id != null && id != 0){
+            return userRepo.findById(id).orElseThrow(() -> internalError);}
         throw internalError;
     }
 

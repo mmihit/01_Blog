@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
 import _Blog.demo.DTO.responses.UserDtoResponse;
+import _Blog.demo.Mapper.UserMapper;
 import _Blog.demo.models.Entity.Follow;
 import _Blog.demo.models.Entity.User;
 import _Blog.demo.repository.FollowRepo;
@@ -26,8 +27,11 @@ public class FollowService {
     private FollowRepo followRepo;
 
     public void followingUser(Long followingId) {
+        if (followingId == null || followingId <= 0 || userService.userExistsById(followingId)) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "following user ID is invalid");
+        }
+        
         Long authenticationUserId = userService.getAuthenticatedUserId();
-
         if (followingId.equals(authenticationUserId)) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "You cannot follow yourself");
         }
@@ -48,11 +52,11 @@ public class FollowService {
 
     @Transactional
     public void unfollowingUser(Long followingId) {
-        Long authenticationUserId = userService.getAuthenticatedUserId();
-        if (followingId == null || followingId <= 0) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "following ID is invalid");
+        if (followingId == null || followingId <= 0 || userService.userExistsById(followingId)) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "following user ID is invalid");
         }
 
+        Long authenticationUserId = userService.getAuthenticatedUserId();
         if (followingId.equals(authenticationUserId)) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "You cannot unfollow yourself");
         }
@@ -68,15 +72,24 @@ public class FollowService {
         followRepo.deleteByFollowingIdAndFollowerId(followingId, authenticationUserId);
     }
 
-    public List<UserDtoResponse> getFollowers(String username) {
-        Long userId = userService.getUserIdByUsername(username);
-        return followRepo.findAllByFollowingId(userId).stream().map(follow->UserDtoResponse.toDtoResponse(follow.getFollower())).toList();
+    public List<User> getFollowers(Long id) {
+        if (!userService.userExistsById(id)) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "User not found with this id");
+        }
+        return followRepo.findAllByFollowingId(id)
+                .stream()
+                .map(follow -> follow.getFollower())
+                .toList();
     }
 
-    public List<UserDtoResponse> getFollowing(String username) {
-    Long userId = userService.getUserIdByUsername(username);
-    return followRepo.findAllByFollowerId(userId).stream().map(follow->
-    UserDtoResponse.toDtoResponse(follow.getFollowing())).toList();
+    public List<User> getFollowing(Long id) {
+        if (!userService.userExistsById(id)) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "User not found with this id");
+        }
+        return followRepo.findAllByFollowerId(id)
+                .stream()
+                .map(follow -> follow.getFollowing())
+                .toList();
     }
 
     public Boolean isFollowing(Long followingId, Long followerId) {

@@ -5,5 +5,5 @@ import lombok.Data;
 @Data
 public class FollowRequest {
     private String action;
-    private String username;
+    private long followingUserId;
 }

@@ -14,6 +14,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class UserDtoResponse {
+    private long id;
     private String username;
     private String email;
     private Role role;
@@ -21,16 +22,4 @@ public class UserDtoResponse {
     private String bio;
     private boolean isBanned;
     private LocalDateTime createdAt;
-
-    static public UserDtoResponse toDtoResponse(User user) {
-        return UserDtoResponse.builder()
-                .username(user.getUsername())
-                .email(user.getEmail())
-                .role(user.getRole())
-                .avatar(user.getAvatar())
-                .bio(user.getBio())
-                .isBanned(user.isBanned())
-                .createdAt(user.getCreatedAt())
-                .build();
-    }
 }

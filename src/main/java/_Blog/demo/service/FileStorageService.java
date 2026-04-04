@@ -19,11 +19,7 @@ public class FileStorageService {
     @Value(value = "${app.storage.upload-dir}")
     private String uploadDirPath;
 
-    public String uploadFile(MultipartFile file, String type, Long id) {
-        if (file.isEmpty()) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "You need to chose a file");
-        }
-
+    public String uploadFile(MultipartFile file, String type, String parentFolder) {
         try {
             Path rootPath = Paths.get(uploadDirPath);
             if (!Files.exists(rootPath)) {
@@ -38,17 +34,17 @@ public class FileStorageService {
                 throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "The file uploaded has some problems");
             }
             String uniqueFileName = UUID.randomUUID().toString() + extension;
-            Path subUploadPath = rootPath.resolve(type);
+            Path subUploadPath = rootPath.resolve(type).resolve(parentFolder);
 
             if (!Files.exists(subUploadPath)) {
-                Files.createDirectory(subUploadPath);
+                Files.createDirectories(subUploadPath);
             }
 
             Path uniqueFilePath = subUploadPath.resolve(uniqueFileName);
 
             Files.copy(file.getInputStream(), uniqueFilePath);
 
-            return type + "/" + uniqueFileName;
+            return type +"/" + parentFolder +"/" + uniqueFileName;
         } catch (IOException e) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, "Can't upload this file");
         }

@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import _Blog.demo.DTO.responses.UserDtoResponse;
+import _Blog.demo.Mapper.UserMapper;
 import _Blog.demo.service.UserService;
 
 @RestController
@@ -19,12 +20,17 @@ public class UserController {
 
     @GetMapping("/me")
     public ResponseEntity<UserDtoResponse> getMe() {
-        return ResponseEntity.ok(UserDtoResponse.toDtoResponse(userService.getMe()));
+        return ResponseEntity.ok(UserMapper.toDtoResponse(userService.getMe()));
     }
 
-    @GetMapping("/{username}")
-    public ResponseEntity<UserDtoResponse> getUserByUsername(@PathVariable String username) {
-        return ResponseEntity.ok(UserDtoResponse.toDtoResponse(userService.getUserByUsername(username)));
+    // @GetMapping("/{username}")
+    // public ResponseEntity<UserDtoResponse> getUserByUsername(@PathVariable String username) {
+    //     return ResponseEntity.ok(UserMapper.toDtoResponse(userService.getUserByUsername(username)));
+    // }
+
+    @GetMapping("/{id}")
+        public ResponseEntity<UserDtoResponse> getUserByUsername(@PathVariable Long id) {
+        return ResponseEntity.ok(UserMapper.toDtoResponse(userService.getUserById(id)));
     }
 
 }

@@ -7,7 +7,7 @@ import lombok.Data;
 @Data
 @Builder
 public class ReportRequest {
-    private String reportingUsername;
+    private Long reportingUserId;
     private Long reportedPostId;
     private ReportType reportType;
     private String reason;

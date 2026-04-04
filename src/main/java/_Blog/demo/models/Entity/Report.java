@@ -46,22 +46,4 @@ public class Report {
 
     @Column(name = "created_at")
     private final LocalDateTime createdAt = LocalDateTime.now();
-
-    static public Report toReportUserEntity(ReportRequest requestDto, User reporter, User reportingUser) {
-        return Report.builder()
-                .reporter(reporter)
-                .reportingUser(reportingUser)
-                .body(requestDto.getReason())
-                .reportType(ReportType.USER_PROFILE)
-                .build();
-    }
-
-    static public Report toReportPostEntity(ReportRequest requestDto, User reporter, Post reportedPost) {
-        return Report.builder()
-                .reporter(reporter)
-                .reportingPost(reportedPost)
-                .body(requestDto.getReason())
-                .reportType(ReportType.POST_CONTENT)
-                .build();
-    }
 }

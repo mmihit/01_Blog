@@ -1,5 +1,7 @@
 package _Blog.demo.DTO.requests;
 
+import java.util.List;
+
 import org.hibernate.validator.constraints.Length;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -18,5 +20,5 @@ public class PostRequest {
     @Length(message = "the maximum title length is 3000", max = 3000)
     private String body;
     
-    private MultipartFile mediaFile;
+    private List<MultipartFile> mediaFile;
 }

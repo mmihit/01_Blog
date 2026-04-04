@@ -9,7 +9,6 @@ import lombok.NoArgsConstructor;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import _Blog.demo.DTO.requests.SignUpRequest;
 import _Blog.demo.types.Role;
 
 @Entity
@@ -88,16 +87,6 @@ public class User {
         this.role = Role.USER;
         this.isBanned = false;
         this.createdAt = LocalDateTime.now();
-    }
-
-    static public User toEntity(SignUpRequest userDto) {
-        return User.builder()
-                .username(userDto.getUsername())
-                .email(userDto.getEmail())
-                .password(userDto.getPassword())
-                .avatar(userDto.getAvatar())
-                .bio(userDto.getBio())
-                .build();
     }
 
 }

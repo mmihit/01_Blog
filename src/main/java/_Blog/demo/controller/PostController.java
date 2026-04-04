@@ -12,12 +12,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import _Blog.demo.DTO.requests.PostRequest;
-import _Blog.demo.DTO.responses.MediaDtopResponse;
-import _Blog.demo.DTO.responses.PostDtopResponse;
+import _Blog.demo.DTO.responses.MediaDtoResponse;
+import _Blog.demo.DTO.responses.PostDtoResponse;
+import _Blog.demo.Mapper.MediaMapper;
+import _Blog.demo.Mapper.PostMapper;
 import _Blog.demo.models.Entity.Media;
 import _Blog.demo.models.Entity.Post;
 import _Blog.demo.service.MediaService;
 import _Blog.demo.service.PostService;
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/api/post")
@@ -29,16 +32,22 @@ public class PostController {
     private MediaService mediaService;
 
     @PostMapping(value = "/create", consumes = { "multipart/form-data" })
-    public ResponseEntity<Object> create(@ModelAttribute PostRequest body) {
+    public ResponseEntity<Object> create(@Valid @ModelAttribute PostRequest body) {
         postService.create(body);
         return ResponseEntity.ok("The post created succufully.");
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("getByPostId/{id}")
     public ResponseEntity<Object> getById(@PathVariable Long id) {
         Post post = postService.getPostById(id);
         List<Media> media = mediaService.getMediaByPostId(post.getId());
-        List<MediaDtopResponse> mediaResponse = media.stream().map(m->MediaDtopResponse.toMediaDtopResponse(m)).toList();
-        return ResponseEntity.ok(PostDtopResponse.toPostDtopResponse(post, mediaResponse));
+        List<MediaDtoResponse> mediaResponse = media.stream().map(m->MediaMapper.toMediaDtopResponse(m)).toList();
+        return ResponseEntity.ok(PostMapper.toPostDtoResponse(post, mediaResponse));
+    }
+
+    @GetMapping("getByUserId/{id}")
+    public ResponseEntity<Object> getByUserId(@PathVariable Long id) {
+        List<Post> posts = postService.getPostsByUserIdAndStatus(id, "published");
+        return ResponseEntity.ok(posts.stream().map(post->PostMapper.toPostDtoResponse(post, MediaMapper.toMediasDtoResponses(mediaService.getMediaByPostId(post.getId())))).toList());
     }
 }

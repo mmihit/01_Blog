@@ -2,6 +2,7 @@ package _Blog.demo.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,8 +21,8 @@ public class AuthController {
     @Autowired
     private AuthenticationService authenticationService;
 
-    @PostMapping("/sign_up")
-    public ResponseEntity<String> signUp(@Valid @RequestBody SignUpRequest user) {
+    @PostMapping(value = "/sign_up", consumes = { "multipart/form-data" })
+    public ResponseEntity<String> signUp(@Valid @ModelAttribute SignUpRequest user) {
         authenticationService.signUp(user);
         return ResponseEntity.ok("user created successfully");
     }

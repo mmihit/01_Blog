@@ -32,11 +32,5 @@ public class Media {
     @Column(name = "media_type", nullable = false)
     private String mediaType;
 
-    public static Media toMediaEntity(Post post, String mediaUrl, String mediaType) {
-        Media media = new Media();
-        media.setPost(post);
-        media.setMediaUrl(mediaUrl);
-        media.setMediaType(mediaType);
-        return media;
-    }
+
 }

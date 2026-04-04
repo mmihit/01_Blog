@@ -49,12 +49,4 @@ public class Post {
 
     @OneToMany(mappedBy = "reportingPost", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Report> reports;
-
-    public static Post toPostEntity(PostRequest postRequest, User user) {
-        return Post.builder()
-                .title(postRequest.getTitle())
-                .body(postRequest.getBody())
-                .user(user)
-                .build();
-    }
 }

@@ -3,6 +3,7 @@ package _Blog.demo.DTO.requests;
 import java.time.LocalDateTime;
 
 import org.hibernate.validator.constraints.Length;
+import org.springframework.web.multipart.MultipartFile;
 
 // import _Blog.demo.models.Entity.User;
 import _Blog.demo.types.Role;
@@ -34,7 +35,7 @@ public class SignUpRequest {
     private String password;
 
     private Role role;
-    private String avatar;
+    private MultipartFile avatar;
 
     @Length(message = "The bio must be 1500 charachters at long", max = 1500)
     private String bio;

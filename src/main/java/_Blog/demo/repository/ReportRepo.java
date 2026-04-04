@@ -11,5 +11,5 @@ import _Blog.demo.models.Entity.Report;
 public interface ReportRepo extends JpaRepository<Report, Long> {
     public boolean existsByReporterIdAndReportingUserId(Long reporterId, Long reportingId);
     public boolean existsByReporterIdAndReportingPostId(Long reporterId, Long reportingId);
-    public List<Report> findByReporterId(Long reportedId);
+    public List<Report> findAllByReporterId(Long reportedId);
 }
