@@ -1,9 +1,11 @@
 package _Blog.demo.service;
 
 import java.util.List;
-import java.util.stream.Stream;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -11,14 +13,11 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 
 import _Blog.demo.DTO.requests.PostRequest;
-import _Blog.demo.DTO.responses.PostDtoResponse;
 import _Blog.demo.Mapper.PostMapper;
-import _Blog.demo.models.Entity.Media;
 import _Blog.demo.models.Entity.Post;
 import _Blog.demo.models.Entity.User;
 import _Blog.demo.repository.PostRepo;
 import jakarta.persistence.EntityManager;
-import jakarta.validation.Valid;
 
 @Service
 public class PostService {
@@ -59,12 +58,12 @@ public class PostService {
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Post not found"));
     }
 
-    public List<Post> getPostsByUserIdAndStatus(Long id, String status) {
+    public List<Post> getPostsByUserIdAndStatus(Long id, String status,Pageable pageable) {
         if (!userService.userExistsById(id)) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid user id");
         }
 
-        return postRepo.findAllByUserIdAndStatus(id, status);
+        return postRepo.findAllByUserIdAndStatus(id, status, pageable);
     }
 
     public boolean isPostExists(Long id) {

@@ -29,8 +29,4 @@ public class Follow {
     @Builder.Default
     @Column(updatable = false)
     private LocalDateTime createdAt = LocalDateTime.now();
-
-    static public Follow toFollowEntity(User followingUser, User followerUser) {
-        return Follow.builder().following(followingUser).follower(followerUser).build();
-    }
 }

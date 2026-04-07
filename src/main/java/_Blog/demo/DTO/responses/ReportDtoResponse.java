@@ -13,7 +13,7 @@ public class ReportDtoResponse {
     protected UserLiteDtoResponse reporter;
     protected ReportType reportType;
     protected UserLiteDtoResponse reportingUser;
-    protected PostDtoResponse reportingPost;
+    protected PostLiteDtoResponse reportingPost;
     protected String body;
     protected String status;
     protected LocalDateTime createdAt;

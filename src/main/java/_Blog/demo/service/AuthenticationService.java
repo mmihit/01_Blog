@@ -51,7 +51,9 @@ public class AuthenticationService {
                     "avatar");
         }
         User user = UserMapper.toUserEntity(input, avatarpathString);
-        userRepo.save(user);
+        if (user!=null) {
+            userRepo.save(user);
+        }
 
     }
 

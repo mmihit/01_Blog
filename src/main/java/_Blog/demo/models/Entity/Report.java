@@ -2,7 +2,6 @@ package _Blog.demo.models.Entity;
 
 import java.time.LocalDateTime;
 
-import _Blog.demo.DTO.requests.ReportRequest;
 import _Blog.demo.types.ReportType;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;

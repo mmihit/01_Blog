@@ -8,8 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
-import _Blog.demo.DTO.responses.UserDtoResponse;
-import _Blog.demo.Mapper.UserMapper;
+import _Blog.demo.Mapper.FollowMapper;
 import _Blog.demo.models.Entity.Follow;
 import _Blog.demo.models.Entity.User;
 import _Blog.demo.repository.FollowRepo;
@@ -22,8 +21,8 @@ public class FollowService {
 
     @Autowired
     private UserService userService;
-    @Autowired
     private EntityManager entityManager;
+    @Autowired
     private FollowRepo followRepo;
 
     public void followingUser(Long followingId) {
@@ -42,7 +41,7 @@ public class FollowService {
 
         User FollowerUser = entityManager.getReference(User.class, authenticationUserId);
         User FollowingUser = entityManager.getReference(User.class, followingId);
-        Follow followEntity = Follow.toFollowEntity(FollowingUser, FollowerUser);
+        Follow followEntity = FollowMapper.toFollowEntity(FollowingUser, FollowerUser);
 
         if (!FollowerUser.equals(null) && !FollowingUser.equals(null) && !followEntity.equals(null)) {
             followRepo.save(followEntity);

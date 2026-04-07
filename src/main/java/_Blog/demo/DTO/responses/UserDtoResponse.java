@@ -2,7 +2,6 @@ package _Blog.demo.DTO.responses;
 
 import java.time.LocalDateTime;
 
-import _Blog.demo.models.Entity.User;
 import _Blog.demo.types.Role;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

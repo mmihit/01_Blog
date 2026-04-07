@@ -10,6 +10,6 @@ public class ReportLiteDtoResponse {
     private Long id;
     private UserLiteDtoResponse reporter;
     private UserLiteDtoResponse reportingUser;
-    private PostDtoResponse reportingPost;
+    private PostLiteDtoResponse reportingPost;
     private ReportType reportType;
 }

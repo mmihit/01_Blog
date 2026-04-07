@@ -3,7 +3,6 @@ package _Blog.demo.models.Entity;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import _Blog.demo.DTO.requests.PostRequest;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

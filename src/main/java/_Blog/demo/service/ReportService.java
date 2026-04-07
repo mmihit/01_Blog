@@ -62,7 +62,7 @@ public class ReportService {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Post or reason empty");
         }
 
-        if (postService.isPostExists(body.getReportedPostId()))
+        if (!postService.isPostExists(body.getReportedPostId()))
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Post Id invalid");
 
         User reporter = userService.getMe();
@@ -78,9 +78,10 @@ public class ReportService {
         Report reportEntity = ReportMapper.toReportPostEntity(body, reporter, reportedPost);
         if (reportEntity != null) {
             reportRepo.save(reportEntity);
+        } else {
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,
+                    "Something went wrong try again later");
         }
-        throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,
-                "Something went wrong try again later");
 
     }
 

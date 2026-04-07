@@ -12,20 +12,18 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import _Blog.demo.DTO.requests.FollowRequest;
-import _Blog.demo.DTO.responses.UserDtoResponse;
 import _Blog.demo.DTO.responses.UserLiteDtoResponse;
 import _Blog.demo.Mapper.UserMapper;
 import _Blog.demo.models.Entity.User;
 import _Blog.demo.service.FollowService;
-import _Blog.demo.service.UserService;
 
 @RestController
 @RequestMapping("/api/follow")
 public class FollowController {
     @Autowired
     private FollowService followService;
-    @Autowired
-    private UserService userService;
+    // @Autowired
+    // private UserService userService;
 
     @PostMapping
     public ResponseEntity<Object> followAction(@RequestBody FollowRequest body) {
@@ -37,7 +35,6 @@ public class FollowController {
             return ResponseEntity.ok("You have unfollowed this user");
         }
         return ResponseEntity.badRequest().body("Follow action is not valid");
-
     }
 
     @GetMapping("/getFollowers/{id}")
