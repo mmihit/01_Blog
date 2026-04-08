@@ -5,6 +5,7 @@ import java.util.List;
 import _Blog.demo.DTO.requests.SignUpRequest;
 import _Blog.demo.DTO.responses.UserDtoResponse;
 import _Blog.demo.DTO.responses.UserLiteDtoResponse;
+import _Blog.demo.models.Entity.Follow;
 import _Blog.demo.models.Entity.User;
 
 public class UserMapper {
@@ -46,4 +47,6 @@ public class UserMapper {
                 .map(user -> UserMapper.toUserLiteDtoResponse(user))
                 .toList();
     }
+
+
 }

@@ -1,6 +1,6 @@
 package _Blog.demo.Mapper;
 
-import _Blog.demo.controller.PageDtoResponse;
+import _Blog.demo.DTO.responses.PageDtoResponse;
 
 public class PageMapper {
     public static <T> PageDtoResponse toPageDtoResponse(T data, boolean hasNext) {

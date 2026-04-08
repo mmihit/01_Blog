@@ -3,6 +3,8 @@ package _Blog.demo.service;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -71,24 +73,18 @@ public class FollowService {
         followRepo.deleteByFollowingIdAndFollowerId(followingId, authenticationUserId);
     }
 
-    public List<User> getFollowers(Long id) {
+    public Page<Follow> getFollowers(Long id, Pageable pageable) {
         if (!userService.userExistsById(id)) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "User not found with this id");
         }
-        return followRepo.findAllByFollowingId(id)
-                .stream()
-                .map(follow -> follow.getFollower())
-                .toList();
+        return followRepo.findAllByFollowingId(id, pageable);
     }
 
-    public List<User> getFollowing(Long id) {
+    public Page<Follow> getFollowings(Long id, Pageable pageable) {
         if (!userService.userExistsById(id)) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "User not found with this id");
         }
-        return followRepo.findAllByFollowerId(id)
-                .stream()
-                .map(follow -> follow.getFollowing())
-                .toList();
+        return followRepo.findAllByFollowerId(id, pageable);
     }
 
     public Boolean isFollowing(Long followingId, Long followerId) {

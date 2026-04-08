@@ -3,6 +3,7 @@ package _Blog.demo.service;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -58,7 +59,7 @@ public class PostService {
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Post not found"));
     }
 
-    public List<Post> getPostsByUserIdAndStatus(Long id, String status,Pageable pageable) {
+    public Page<Post> getPostsByUserIdAndStatus(Long id, String status,Pageable pageable) {
         if (!userService.userExistsById(id)) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid user id");
         }

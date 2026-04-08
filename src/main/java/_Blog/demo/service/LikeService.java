@@ -36,9 +36,6 @@ public class LikeService {
 
     @Transactional
     public void AddLike(Long postId) {
-        // if (!postService.isPostExists(likeRequest.getPostId())) {
-        // throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid Post Id");
-        // }
         Post post = entityManager.getReference(Post.class, postId);
         User user = entityManager.getReference(User.class, userService.getAuthenticatedUserId());
 

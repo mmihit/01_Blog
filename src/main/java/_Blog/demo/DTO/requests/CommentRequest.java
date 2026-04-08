@@ -1,15 +1,15 @@
-package _Blog.demo.controller;
+package _Blog.demo.DTO.requests;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Data
 @Builder
-public class PageDtoResponse<T> {
-    private T data;
-    private boolean hasNext;
+public class CommentRequest {
+    private Long postId;
+    private String body;
 }

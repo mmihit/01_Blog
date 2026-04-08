@@ -47,7 +47,8 @@ public class PostMapper {
                         return null;
                 return PostLiteDtoResponse.builder()
                                 .id(post.getId())
-                                .title(post.getBody())
+                                .title(post.getTitle())
+                                .body(post.getBody())
                                 .creator(user)
                                 .build();
         }

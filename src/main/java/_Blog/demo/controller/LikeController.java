@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import _Blog.demo.DTO.requests.LikeRequest;
-import _Blog.demo.DTO.responses.UserDtoResponse;
 import _Blog.demo.DTO.responses.UserLiteDtoResponse;
 import _Blog.demo.Mapper.PageMapper;
 import _Blog.demo.Mapper.UserMapper;
@@ -47,12 +46,12 @@ public class LikeController {
 
     @GetMapping("getByPostId/{id}")
     public ResponseEntity<Object> getByPostId(@PathVariable Long id,
-            @RequestParam (required = false, defaultValue = "1") int nOpage,
-            @RequestParam (required = false, defaultValue = "5") int pageSize) {
-                Pageable pageable = PageRequest.of(nOpage-1, pageSize, Sort.by("createdAt").ascending());
-                Page<User> usersPage = likeService.GetLikersByPostId(id, pageable);
-                List<UserLiteDtoResponse> usersLiteResponse = UserMapper.toUsersLiteDtoResponse(usersPage.getContent());
+            @RequestParam(required = false, defaultValue = "1") int nOpage,
+            @RequestParam(required = false, defaultValue = "5") int pageSize) {
+        Pageable pageable = PageRequest.of(nOpage - 1, pageSize, Sort.by("createdAt").ascending());
+        Page<User> usersPage = likeService.GetLikersByPostId(id, pageable);
+        List<UserLiteDtoResponse> usersLiteResponse = UserMapper.toUsersLiteDtoResponse(usersPage.getContent());
 
-                return ResponseEntity.ok(PageMapper.toPageDtoResponse(usersLiteResponse,usersPage.hasNext()));
-            }
+        return ResponseEntity.ok(PageMapper.toPageDtoResponse(usersLiteResponse, usersPage.hasNext()));
+    }
 }

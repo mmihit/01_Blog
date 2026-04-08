@@ -3,6 +3,8 @@ package _Blog.demo.service;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -95,14 +97,14 @@ public class ReportService {
         return reportRepo.existsByReporterIdAndReportingPostId(reporter.getId(), reportedPost.getId());
     }
 
-    public List<Report> GetReportsByReporterId(Long userId) {
+    public Page<Report> GetReportsByReporterId(Long userId, Pageable pageable) {
         if (!userService.userExistsById(userId))
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "User Id is invalid");
-        List<Report> reports = reportRepo.findAllByReporterId(userId);
+        Page<Report> reports = reportRepo.findAllByReporterId(userId, pageable);
         return reports;
     }
 
-    public List<Report> GetAllReports() {
-        return reportRepo.findAll(Sort.by("createdAt").descending());
+    public Page<Report> GetAllReports(Pageable pageable) {
+        return reportRepo.findAll(pageable);
     }
 }
